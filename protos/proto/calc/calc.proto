@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package calc;
+
+option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/protos/gen/go;calcv1";
+
+service Calc {
+  rpc SaveExpression (SaveExpressionRequest) returns (SaveExpressionResponse);
+
+  rpc GetExpression (GetExpressionRequest) returns (GetExpressionResponse);
+
+  rpc UpdateExpression (UpdateExpressionRequest) returns (NothingMessage);
+
+  rpc DeleteExpression (DeleteExpressionRequest) returns (NothingMessage);
+
+  rpc GetNotDonedExpressions (NothingMessage) returns (GetNotDonedExpressionsResponse);
+
+  rpc GetAllExpressions (NothingMessage) returns (GetAllExpressionsResponse);
+
+  rpc UpdateArithmetic (UpdateArithmeticRequest) returns (NothingMessage);
+
+  rpc GetArithmetic (GetArithmeticRequest) returns (GetArithmeticResponse);
+}
+
+message NothingMessage{}
+
+message SaveExpressionRequest {
+  string expression = 1;
+  string ttdo = 2;
+}
+
+message SaveExpressionResponse {
+  int64 expression_id = 1;
+}
+
+message GetExpressionRequest {
+  int64 expression_id = 1;
+}
+
+message GetExpressionResponse {
+  int64 expression_id = 1;
+  string expression = 2;
+  string status = 3;
+  string ttdo = 4;
+}
+
+message UpdateExpressionRequest {
+  int64 expression_id = 1;
+  string status = 2;
+  string ttdo = 3;
+}
+
+message DeleteExpressionRequest {
+  int64 expression_id = 1;
+}
+
+message GetNotDonedExpressionsResponse {
+  repeated int64 expression_id = 1;
+}
+
+message GetAllExpressionsResponse {
+  repeated int64 expressions = 1;
+}
+
+message UpdateArithmeticRequest {
+  string sign = 1;
+  string ttdo = 2;
+}
+
+message GetArithmeticRequest {
+  string sign = 1;
+}
+
+message GetArithmeticResponse {
+  string sign = 1;
+  string ttdo = 2;
+}

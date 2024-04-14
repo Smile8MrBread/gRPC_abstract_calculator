@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/internal/transport/grpc/proto";
+option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/internal/transport/grpc/proto;auth1";
 
 message RegisterRequest {
   string email = 1;
