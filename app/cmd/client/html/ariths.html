@@ -298,26 +298,30 @@
         body.UserId = Number(id);
 
         async function fetchJSON() {
-            const response = await fetch('/ariths/' + id);
-            return await response.json();
+            return await fetch('/ariths/' + id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
         }
         fetchJSON()
             .then(data => {
-                if (data.statusCode === 400) {
-                    throw new Error(data.message);
-                } else if (data.statusCode === 303) {
+                if (data.statusCode === 303) {
                     document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
                     window.location.replace("/");
                 } else {
-                    errPlus.innerHTML = "";
-                    plusForm.reset();
-                    const secPlus = document.getElementById("secPlus");
-                    secPlus.innerHTML = `${body.Ttdo}` + "s";
+                    if (isNaN(body.Ttdo)) {
+                        errPlus.innerHTML = "<span style='color: red;'>Enter a number</span>";
+                    } else {
+                        errPlus.innerHTML = "";
+                        plusForm.reset();
+                        const secPlus = document.getElementById("secPlus");
+                        secPlus.innerHTML = `${body.Ttdo}` + "s";
+                    }
                 }
             })
-            .catch(error => {
-                errPlus.innerHTML = "<span style='color: red;'>Enter a number</span>";
-            });
     });
 
 
@@ -334,25 +338,29 @@
         body.UserId = Number(id)
 
         async function fetchJSON() {
-            const response = await fetch('/ariths/' + id);
-            return await response.json();
+            return await fetch('/ariths/' + id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
         }
         fetchJSON()
             .then(data => {
-                if (data.statusCode === 400) {
-                    throw new Error(data.message);
-                } else if (data.statusCode === 303) {
+                if (data.statusCode === 303) {
                     document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
                     window.location.replace("/");
                 } else {
-                    errMinus.innerHTML = ""
-                    minusForm.reset()
-                    const secMinus = document.getElementById("secMinus")
-                    secMinus.innerHTML = `${body.Ttdo}` + "s"
+                    if (isNaN(body.Ttdo)) {
+                        errMinus.innerHTML = "<span style='color: red;'>Enter a number</span>";
+                    } else {
+                        errMinus.innerHTML = ""
+                        minusForm.reset()
+                        const secMinus = document.getElementById("secMinus")
+                        secMinus.innerHTML = `${body.Ttdo}` + "s"
+                    }
                 }
-            })
-            .catch(error => {
-                errMinus.innerHTML = "<span style='color: red;'>Enter a number</span>"
             })
     })
 
@@ -370,26 +378,30 @@
         body.UserId = Number(id);
 
         async function fetchJSON() {
-            const response = await fetch('/ariths/' + id);
-            return await response.json();
+            return await fetch('/ariths/' + id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
         }
         fetchJSON()
             .then(data => {
-                if (data.statusCode === 400) {
-                    throw new Error(data.message);
-                } else if (data.statusCode === 303) {
+                if (data.statusCode === 303) {
                     document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
                     window.location.replace("/");
                 } else {
-                    errMult.innerHTML = "";
-                    multForm.reset();
-                    const secMult = document.getElementById("secMult");
-                    secMult.innerHTML = `${body.Ttdo}` + "s";
+                    if (isNaN(body.Ttdo)) {
+                        errMult.innerHTML = "<span style='color: red;'>Enter a number</span>";
+                    } else {
+                        errMult.innerHTML = "";
+                        multForm.reset();
+                        const secMult = document.getElementById("secMult");
+                        secMult.innerHTML = `${body.Ttdo}` + "s";
+                    }
                 }
             })
-            .catch(error => {
-                errMult.innerHTML = "<span style='color: red;'>Enter a number</span>";
-            });
     });
 
 
@@ -405,26 +417,30 @@
         body.Ttdo = Number(inpDiv.value);
         body.UserId = Number(id);
         async function fetchJSON() {
-            const response = await fetch('/ariths/' + id);
-            return await response.json();
+            return await fetch('/ariths/' + id, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
         }
         fetchJSON()
             .then(data => {
-                if (data.statusCode === 400) {
-                    throw new Error(data.message);
-                } else if (data.statusCode === 303) {
+                if (data.statusCode === 303) {
                     document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
                     window.location.replace("/");
                 } else {
-                    errDiv.innerHTML = "";
-                    divForm.reset();
-                    const secDiv = document.getElementById("secDiv");
-                    secDiv.innerHTML = `${body.Ttdo}` + "s";
+                    if (isNaN(body.Ttdo)) {
+                        errDiv.innerHTML = "<span style='color: red;'>Enter a number</span>";
+                    } else {
+                        errDiv.innerHTML = "";
+                        divForm.reset();
+                        const secDiv = document.getElementById("secDiv");
+                        secDiv.innerHTML = `${body.Ttdo}` + "s";
+                    }
                 }
             })
-            .catch(error => {
-                errDiv.innerHTML = "<span style='color: red;'>Enter a number</span>";
-            });
     });
 </script>
 </body>

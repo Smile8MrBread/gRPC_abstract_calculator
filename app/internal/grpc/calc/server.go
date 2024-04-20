@@ -73,6 +73,7 @@ func (s *ServerAPI) GetExpression(ctx context.Context, req *calcv1.GetExpression
 		Ttdo:         expression.Ttdo,
 		ExpressionId: expression.ID,
 		Result:       expression.Result,
+		UserId:       expression.UserId,
 	}, nil
 }
 
