@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/internal/transport/grpc/proto;auth1";
+option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/internal/transport/grpc/proto;authv1";
 
 message RegisterRequest {
-  string email = 1;
+  string login = 1;
   string password = 2;
 }
 
@@ -14,7 +14,7 @@ message RegisterResponse {
 }
 
 message LoginRequest {
-  string email = 1;
+  string login = 1;
   string password = 2;
   int32 app_id = 3;
 }
@@ -23,18 +23,8 @@ message LoginResponse {
   string token = 1;
 }
 
-message IsAdminResponse {
-  bool is_admin = 1;
-}
-
-message IsAdminRequest {
-  int64 user_id = 1;
-}
-
 service Auth {
   rpc Register (RegisterRequest) returns (RegisterResponse);
 
   rpc Login (LoginRequest) returns (LoginResponse);
-
-  rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
 }

@@ -1,0 +1,12 @@
+env: "local"
+storage_path: "./app/storage/app.db"
+token_ttl: 1h
+authGRPC:
+  port: 26026
+  timeout: 10h
+calcGRPC:
+  port: 26126
+  timeout: 10h
+agentGRPC:
+  port: 26226
+  timeout: 10h

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>All expressions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Platypi:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Platypi', serif;
+        }
+
+        html,
+        body {
+            display: grid;
+            height: 100%;
+            width: 100%;
+            place-items: center;
+            background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+        }
+
+        ::selection {
+            background: #fa4299;
+            color: #fff;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            margin: 0 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #a445b2;
+            transition: color 0.3s ease;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #fa4299;
+            color: #fff;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #b33737;
+        }
+
+        .header {
+            font-size: 32px;
+            text-align: center;
+            margin-top: 80px;
+            color: #fff;
+        }
+
+        table {
+            max-width: 500px;
+            width: 100%;
+            margin: 50px auto;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            align-items: center;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #541d3b;
+        }
+
+        th{
+            font-size: 20px;
+            background-color: #fff7ff;
+        }
+
+        tr {
+            background-color: #ff5eff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #a445b2;
+        }
+
+        a:hover,
+        .active {
+            color: #c38bff;
+        }
+    </style>
+</head>
+
+<body>
+<div class="navbar">
+    <div class="nav-item">
+        <h3><a href="http://localhost:8080/newExp">Calculator</a></h3>
+    </div>
+    <div class="nav-item">
+        <h3><a href="http://localhost:8080/ariths">Operations</a></h3>
+    </div>
+    <div class="nav-item">
+        <h3><a class="active" href="http://localhost:8080/allExp">Results</a></h3>
+    </div>
+    <button class="logout-btn" id="logout-btn"><h3>Logout</h3></button>
+</div>
+
+<h1 class="header">All expressions</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Expression</th>
+        <th>Status</th>
+        <th>Result</th>
+    </tr>
+    </thead>
+    <tbody id="body">
+    </tbody>
+</table>
+    <script>
+        const cookieArr = document.cookie.split("; ");
+        let id = 0;
+        for (let i = 0; i < cookieArr.length; i++) {
+            const cookiePair = cookieArr[i].split("=");
+            if ("id" === cookiePair[0]) {
+                id = cookiePair[1];
+            }
+        }
+
+        const body = document.getElementById("body");
+
+        async function fetchJSON() {
+            const response = await fetch('/allExp/' + id);
+            return await response.json();
+        }
+        fetchJSON()
+            .then(data => {
+                if (data.statusCode === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                }
+                data.forEach((n) => {
+                    body.innerHTML += `
+                    <tr><td>${n["expressionId"]}</td><td>${n["expression"]}</td><td>${n["status"]}</td><td>${n["result"]}</td></tr>
+                    `;
+                });
+            });
+
+        const btnLogOut = document.getElementById("logout-btn");
+        btnLogOut.addEventListener("click", function(event) {
+            document.cookie = "token=";
+            document.cookie = "id=";
+            window.location.replace("http://localhost:8080/");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package agent;
+
+option go_package = "github.com/Smile8MrBread/gRPC_abstract_calculator/protos/gen/go;agentv1";
+
+service GRPCAgent {
+
+  rpc ExpForDo(ExpForDoRequest) returns (NothingMessage);
+}
+
+message ExpForDoRequest {
+  int64 expressionId = 1;
+}
+
+message NothingMessage {}

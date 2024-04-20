@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Все выражения</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Platypi:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Platypi', serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column; /* Добавлено */
+            justify-content: center;
+            align-items: center;
+            background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+        }
+
+        ::selection {
+            background: #fa4299;
+            color: #fff;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            margin: 0 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #a445b2;
+            transition: color 0.3s ease;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #fa4299;
+            color: #fff;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #b33737;
+        }
+
+        .header {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px; /* Изменено */
+            color: #fff;
+        }
+
+        table {
+            max-width: 500px;
+            width: 100%;
+            margin: 50px auto;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            align-items: center;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #541d3b;
+        }
+
+        th{
+            font-size: 20px;
+            background-color: #fff7ff;
+        }
+
+        tr {
+            background-color: #ff5eff;
+        }
+
+        a {
+            text-decoration: none;
+            color: #a445b2;
+        }
+
+        a:hover,
+        .active {
+            color: #c38bff;
+        }
+        .wrapper{
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+            background: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-inner {
+            text-align: center;
+        }
+
+        .form-inner form .field {
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .form-inner form .field input[type="text"] {
+            height: 50px;
+            width: calc(100% - 100); /* Ширина поля ввода с учетом кнопки */
+            right: 0;
+            border-radius: 5px;
+            border: 1px solid lightgrey;
+            border-bottom-width: 2px;
+            font-size: 17px;
+            margin-right: 15%;
+            padding-left: 10%; /* Отступ слева для знака "+" */
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-inner form .field input[type="submit"] {
+            position: absolute;
+            top: 0;
+            right: 0; /* Перемещаем кнопку вправо */
+            height: 50px;
+            width: 100px; /* Ширина кнопки */
+            border-radius: 5px;
+            background-color: #fa4299;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-inner form .field input[type="submit"]:hover {
+            background-color: #b33737;
+        }
+
+        .form-inner form .field::before {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #999;
+        }
+
+        .seconds {
+            width: 20px;
+        }
+        .field {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div class="nav-item">
+        <h3><a href="http://localhost:8080/newExp">Calculator</a></h3>
+    </div>
+    <div class="nav-item">
+        <h3><a class="active" href="http://localhost:8080/ariths">Operations</a></h3>
+    </div>
+    <div class="nav-item">
+        <h3><a href="http://localhost:8080/allExp">Results</a></h3>
+    </div>
+    <button class="logout-btn" id="logout-btn"><h3>Logout</h3></button>
+</div>
+<h1 class="header">Time of the signs</h1>
+<div class="wrapper">
+    <div class="form-inner">
+        <form id="plusForm" method="post">
+            <div id="errPlus"></div>
+            <div class="field">
+                <span class="seconds" id="secPlus">1s</span>
+                <input type="text" id="inpPlus" placeholder="+" required>
+                <input class="btn-send" type="submit" value="Send">
+            </div>
+        </form>
+        <form id="minusForm" method="post">
+            <div id="errMinus"></div>
+            <div class="field">
+                <span class="seconds" id="secMinus">1s</span>
+                <input type="text" id="inpMinus" placeholder="-" required>
+                <input class="btn-send" type="submit" value="Send">
+            </div>
+        </form>
+        <form id="multForm" method="post">
+            <div id="errMult"></div>
+            <div class="field">
+                <span class="seconds" id="secMult">1s</span>
+                <input type="text" id="inpMult" placeholder="*" required>
+                <input class="btn-send" type="submit" value="Send">
+            </div>
+        </form>
+        <form id="divForm" method="post">
+            <div id="errDiv"></div>
+            <div class="field">
+                <span class="seconds" id="secDiv">1s</span>
+                <input type="text" id="inpDiv" placeholder="/" required>
+                <input class="btn-send" type="submit" value="Send">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const btnLogOut = document.getElementById("logout-btn");
+    btnLogOut.addEventListener("click", function(event) {
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.replace("http://localhost:8080/");
+    });
+
+    const cookieArr = document.cookie.split("; ");
+    let id = 0;
+    for(let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+        if ("id" === cookiePair[0]) {
+            id = cookiePair[1];
+        }
+    }
+
+    async function fetchJSON() {
+        const response = await fetch('/ariths/' + id);
+        return await response.json();
+    }
+    fetchJSON()
+        .then(data => {
+           if (data.statusCode === 303) {
+                document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                window.location.replace("/");
+           } else {
+               const plus = data["+"];
+               const minus = data["-"];
+               const mult = data["*"];
+               const div = data["/"];
+
+               const secPlus = document.getElementById("secPlus");
+               secPlus.innerHTML = `${plus}` + "s";
+
+               const secMinus = document.getElementById("secMinus");
+               secMinus.innerHTML = minus.toString() + "s";
+
+               const secMult = document.getElementById("secMult");
+               secMult.innerHTML = mult.toString() + "s";
+
+               const secDiv = document.getElementById("secDiv");
+               secDiv.innerHTML = div.toString() + "s";
+           }
+        })
+        .catch(error => {
+            errPlus.innerHTML = "<span style='color: red;'>Enter a number</span>";
+        });
+
+
+    const plusForm = document.getElementById("plusForm");
+    const inpPlus = document.getElementById("inpPlus");
+    const errPlus = document.getElementById("errPlus");
+
+    plusForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let body = {};
+        body.Sign = "+";
+        body.Ttdo = Number(inpPlus.value);
+        body.UserId = Number(id);
+
+        async function fetchJSON() {
+            const response = await fetch('/ariths/' + id);
+            return await response.json();
+        }
+        fetchJSON()
+            .then(data => {
+                if (data.statusCode === 400) {
+                    throw new Error(data.message);
+                } else if (data.statusCode === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                } else {
+                    errPlus.innerHTML = "";
+                    plusForm.reset();
+                    const secPlus = document.getElementById("secPlus");
+                    secPlus.innerHTML = `${body.Ttdo}` + "s";
+                }
+            })
+            .catch(error => {
+                errPlus.innerHTML = "<span style='color: red;'>Enter a number</span>";
+            });
+    });
+
+
+    const minusForm = document.getElementById("minusForm");
+    const inpMinus = document.getElementById("inpMinus");
+    const errMinus = document.getElementById("errMinus");
+
+    minusForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let body = {}
+        body.Sign = "-"
+        body.Ttdo = Number(inpMinus.value)
+        body.UserId = Number(id)
+
+        async function fetchJSON() {
+            const response = await fetch('/ariths/' + id);
+            return await response.json();
+        }
+        fetchJSON()
+            .then(data => {
+                if (data.statusCode === 400) {
+                    throw new Error(data.message);
+                } else if (data.statusCode === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                } else {
+                    errMinus.innerHTML = ""
+                    minusForm.reset()
+                    const secMinus = document.getElementById("secMinus")
+                    secMinus.innerHTML = `${body.Ttdo}` + "s"
+                }
+            })
+            .catch(error => {
+                errMinus.innerHTML = "<span style='color: red;'>Enter a number</span>"
+            })
+    })
+
+
+    const multForm = document.getElementById("multForm");
+    const inpMult = document.getElementById("inpMult");
+    const errMult = document.getElementById("errMult");
+
+    multForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let body = {};
+        body.Sign = "*";
+        body.Ttdo = Number(inpMult.value);
+        body.UserId = Number(id);
+
+        async function fetchJSON() {
+            const response = await fetch('/ariths/' + id);
+            return await response.json();
+        }
+        fetchJSON()
+            .then(data => {
+                if (data.statusCode === 400) {
+                    throw new Error(data.message);
+                } else if (data.statusCode === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                } else {
+                    errMult.innerHTML = "";
+                    multForm.reset();
+                    const secMult = document.getElementById("secMult");
+                    secMult.innerHTML = `${body.Ttdo}` + "s";
+                }
+            })
+            .catch(error => {
+                errMult.innerHTML = "<span style='color: red;'>Enter a number</span>";
+            });
+    });
+
+
+    const divForm = document.getElementById("divForm");
+    const inpDiv = document.getElementById("inpDiv");
+    const errDiv = document.getElementById("errDiv");
+
+    divForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let body = {};
+        body.Sign = "/";
+        body.Ttdo = Number(inpDiv.value);
+        body.UserId = Number(id);
+        async function fetchJSON() {
+            const response = await fetch('/ariths/' + id);
+            return await response.json();
+        }
+        fetchJSON()
+            .then(data => {
+                if (data.statusCode === 400) {
+                    throw new Error(data.message);
+                } else if (data.statusCode === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                } else {
+                    errDiv.innerHTML = "";
+                    divForm.reset();
+                    const secDiv = document.getElementById("secDiv");
+                    secDiv.innerHTML = `${body.Ttdo}` + "s";
+                }
+            })
+            .catch(error => {
+                errDiv.innerHTML = "<span style='color: red;'>Enter a number</span>";
+            });
+    });
+</script>
+</body>
+</html>

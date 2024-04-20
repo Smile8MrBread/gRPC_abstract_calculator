@@ -11,26 +11,25 @@ service Calc {
 
   rpc UpdateExpression (UpdateExpressionRequest) returns (NothingMessage);
 
-  rpc DeleteExpression (DeleteExpressionRequest) returns (NothingMessage);
-
-  rpc GetNotDonedExpressions (NothingMessage) returns (GetNotDonedExpressionsResponse);
-
-  rpc GetAllExpressions (NothingMessage) returns (GetAllExpressionsResponse);
+  rpc GetAllExpressions (GetAllExpressionsRequest) returns (GetAllExpressionsResponse);
 
   rpc UpdateArithmetic (UpdateArithmeticRequest) returns (NothingMessage);
 
   rpc GetArithmetic (GetArithmeticRequest) returns (GetArithmeticResponse);
+
+  rpc AddSigns (AddSignsRequest) returns (NothingMessage);
 }
 
 message NothingMessage{}
 
 message SaveExpressionRequest {
   string expression = 1;
-  string ttdo = 2;
+  int64 ttdo = 2;
+  int64 user_id = 3;
 }
 
 message SaveExpressionResponse {
-  int64 expression_id = 1;
+  int64 expressionId = 1;
 }
 
 message GetExpressionRequest {
@@ -41,37 +40,44 @@ message GetExpressionResponse {
   int64 expression_id = 1;
   string expression = 2;
   string status = 3;
-  string ttdo = 4;
+  int64 ttdo = 4;
+  int64 result = 5;
+  int64 user_id = 6;
 }
 
 message UpdateExpressionRequest {
   int64 expression_id = 1;
   string status = 2;
-  string ttdo = 3;
+  int64 ttdo = 3;
+  int64 result = 4;
 }
 
-message DeleteExpressionRequest {
-  int64 expression_id = 1;
-}
-
-message GetNotDonedExpressionsResponse {
-  repeated int64 expression_id = 1;
+message GetAllExpressionsRequest {
+ int64 user_id = 1;
 }
 
 message GetAllExpressionsResponse {
-  repeated int64 expressions = 1;
+  repeated int64 expression_id = 1;
 }
 
 message UpdateArithmeticRequest {
   string sign = 1;
-  string ttdo = 2;
+  int64 ttdo = 2;
+  int64 user_id = 3;
 }
 
 message GetArithmeticRequest {
   string sign = 1;
+  int64 user_id = 2;
 }
 
 message GetArithmeticResponse {
   string sign = 1;
-  string ttdo = 2;
+  int64 ttdo = 2;
+}
+
+message AddSignsRequest {
+  string sign = 1;
+  int64 ttdo = 2;
+  int64 user_id = 3;
 }

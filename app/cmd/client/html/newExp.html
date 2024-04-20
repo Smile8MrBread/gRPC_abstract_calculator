@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Auth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Platypi:wght@500&display=swap" rel="stylesheet">
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Platypi', serif;
+    }
+    html,body{
+        display: grid;
+        height: 100%;
+        width: 100%;
+        place-items: center;
+        background: -webkit-linear-gradient(left, #a445b2, #fa4299);
+    }
+    ::selection{
+        background: #fa4299;
+        color: #fff;
+    }
+    .wrapper{
+        overflow: hidden;
+        max-width: 390px;
+        background: #fff;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-container .form-inner form{
+        width: 50%;
+        transition: all 0.6s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+    .form-inner form .field{
+        height: 50px;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .form-inner form .field input{
+        height: 100%;
+        width: 100%;
+        outline: none;
+        padding-left: 15px;
+        border-radius: 5px;
+        border: 1px solid lightgrey;
+        border-bottom-width: 2px;
+        font-size: 17px;
+        transition: all 0.3s ease;
+    }
+    .form-inner form .field input:focus{
+        border-color: #fc83bb;
+    }
+    .form-inner form .field input::placeholder{
+        color: #999;
+        transition: all 0.3s ease;
+    }
+    form .field input:focus::placeholder{
+        color: #b3b3b3;
+    }
+
+    .form-inner form .pass-link a,
+    .form-inner form .signup-link a{
+        color: #fa4299;
+        text-decoration: none;
+    }
+    .form-inner form .pass-link a:hover,
+    .form-inner form .signup-link a:hover{
+        text-decoration: underline;
+    }
+    form .btn{
+        height: 50px;
+        width: 100%;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+    form .btn .btn-layer{
+        height: 100%;
+        width: 300%;
+        position: absolute;
+        left: -100%;
+        background: -webkit-linear-gradient(right, #a445b2, #fa4299, #a445b2, #fa4299);
+        border-radius: 5px;
+        transition: all 0.4s ease;;
+    }
+    form .btn:hover .btn-layer{
+        left: 0;
+    }
+    form .btn input[type="submit"]{
+        height: 100%;
+        width: 100%;
+        z-index: 1;
+        position: relative;
+        background: none;
+        border: none;
+        color: #fff;
+        padding-left: 0;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: #ffffff;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+    .nav-item {
+        margin: 0 20px;
+        padding: 10px 20px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-size: 18px;
+        color: #a445b2;
+        transition: color 0.3s ease;
+    }
+
+    .logout-btn {
+        padding: 10px 20px;
+        background-color: #fa4299;
+        color: #fff;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s ease;
+    }
+    .logout-btn:hover {
+        background-color: #b33737;
+    }
+    .header {
+        font-size: 32px;
+    }
+    #err {
+        color: red;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    a {
+        text-decoration: none;
+        color: #a445b2;
+    }
+    a:hover, .active {
+        color: #c38bff;
+    }
+</style>
+<body>
+<div class="navbar">
+    <div class="nav-item"><h3><a class="active" href="http://localhost:8080/newExp">Calculator</a></h3></div>
+    <div class="nav-item"><h3><a href="http://localhost:8080/ariths">Operations</a></h3></div>
+    <div class="nav-item"><h3><a href="http://localhost:8080/allExp">Results</a></h3></div>
+    <button class="logout-btn" id="logout-btn"><h3>Logout</h3></button>
+</div>
+
+<div class="wrapper">
+    <p class="header" align="center">Enter the expression</p>
+    <div class="form-inner">
+        <form id="expForm" method="post">
+            <div id="err"></div>
+            <div class="field">
+                <input type="text" id="exp" name="exp" placeholder="Expression..." required>
+            </div>
+            <div class="field btn">
+                <div class="btn-layer"></div>
+                <input id="btn-send" type="submit" value="Send">
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    const form = document.getElementById("expForm");
+    const err = document.getElementById("err");
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const exp = document.getElementById("exp");
+        let body = {};
+        body.Expression = exp.value;
+
+        fetch("http://localhost:8080/newExp", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body),
+        })
+            .then((response) => {
+                if (response.status === 400) {
+                    throw Error(response.statusText);
+                } else if (response.status === 303) {
+                    document.cookie = "token=; expires=Thu Jan 2 2000 00:00:00 GMT;path=/";
+                    window.location.replace("/");
+                }
+                else {
+                    err.innerHTML = "";
+                    form.reset();
+                }
+            })
+            .catch((error) => {
+                err.innerHTML = "<span style='color: red;'>Please enter a valid expression</span>";
+            });
+    });
+
+    const btnLogOut = document.getElementById("logout-btn");
+    btnLogOut.addEventListener("click", function(event) {
+        document.cookie = "token=";
+        document.cookie = "id=";
+        window.location.replace("http://localhost:8080/");
+    });
+
+</script>
+</body>
+</html>

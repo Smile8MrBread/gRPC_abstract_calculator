@@ -19,14 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Calc_SaveExpression_FullMethodName         = "/calc.Calc/SaveExpression"
-	Calc_GetExpression_FullMethodName          = "/calc.Calc/GetExpression"
-	Calc_UpdateExpression_FullMethodName       = "/calc.Calc/UpdateExpression"
-	Calc_DeleteExpression_FullMethodName       = "/calc.Calc/DeleteExpression"
-	Calc_GetNotDonedExpressions_FullMethodName = "/calc.Calc/GetNotDonedExpressions"
-	Calc_GetAllExpressions_FullMethodName      = "/calc.Calc/GetAllExpressions"
-	Calc_UpdateArithmetic_FullMethodName       = "/calc.Calc/UpdateArithmetic"
-	Calc_GetArithmetic_FullMethodName          = "/calc.Calc/GetArithmetic"
+	Calc_SaveExpression_FullMethodName    = "/calc.Calc/SaveExpression"
+	Calc_GetExpression_FullMethodName     = "/calc.Calc/GetExpression"
+	Calc_UpdateExpression_FullMethodName  = "/calc.Calc/UpdateExpression"
+	Calc_GetAllExpressions_FullMethodName = "/calc.Calc/GetAllExpressions"
+	Calc_UpdateArithmetic_FullMethodName  = "/calc.Calc/UpdateArithmetic"
+	Calc_GetArithmetic_FullMethodName     = "/calc.Calc/GetArithmetic"
+	Calc_AddSigns_FullMethodName          = "/calc.Calc/AddSigns"
 )
 
 // CalcClient is the client API for Calc service.
@@ -36,11 +35,10 @@ type CalcClient interface {
 	SaveExpression(ctx context.Context, in *SaveExpressionRequest, opts ...grpc.CallOption) (*SaveExpressionResponse, error)
 	GetExpression(ctx context.Context, in *GetExpressionRequest, opts ...grpc.CallOption) (*GetExpressionResponse, error)
 	UpdateExpression(ctx context.Context, in *UpdateExpressionRequest, opts ...grpc.CallOption) (*NothingMessage, error)
-	DeleteExpression(ctx context.Context, in *DeleteExpressionRequest, opts ...grpc.CallOption) (*NothingMessage, error)
-	GetNotDonedExpressions(ctx context.Context, in *NothingMessage, opts ...grpc.CallOption) (*GetNotDonedExpressionsResponse, error)
-	GetAllExpressions(ctx context.Context, in *NothingMessage, opts ...grpc.CallOption) (*GetAllExpressionsResponse, error)
+	GetAllExpressions(ctx context.Context, in *GetAllExpressionsRequest, opts ...grpc.CallOption) (*GetAllExpressionsResponse, error)
 	UpdateArithmetic(ctx context.Context, in *UpdateArithmeticRequest, opts ...grpc.CallOption) (*NothingMessage, error)
 	GetArithmetic(ctx context.Context, in *GetArithmeticRequest, opts ...grpc.CallOption) (*GetArithmeticResponse, error)
+	AddSigns(ctx context.Context, in *AddSignsRequest, opts ...grpc.CallOption) (*NothingMessage, error)
 }
 
 type calcClient struct {
@@ -78,25 +76,7 @@ func (c *calcClient) UpdateExpression(ctx context.Context, in *UpdateExpressionR
 	return out, nil
 }
 
-func (c *calcClient) DeleteExpression(ctx context.Context, in *DeleteExpressionRequest, opts ...grpc.CallOption) (*NothingMessage, error) {
-	out := new(NothingMessage)
-	err := c.cc.Invoke(ctx, Calc_DeleteExpression_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *calcClient) GetNotDonedExpressions(ctx context.Context, in *NothingMessage, opts ...grpc.CallOption) (*GetNotDonedExpressionsResponse, error) {
-	out := new(GetNotDonedExpressionsResponse)
-	err := c.cc.Invoke(ctx, Calc_GetNotDonedExpressions_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *calcClient) GetAllExpressions(ctx context.Context, in *NothingMessage, opts ...grpc.CallOption) (*GetAllExpressionsResponse, error) {
+func (c *calcClient) GetAllExpressions(ctx context.Context, in *GetAllExpressionsRequest, opts ...grpc.CallOption) (*GetAllExpressionsResponse, error) {
 	out := new(GetAllExpressionsResponse)
 	err := c.cc.Invoke(ctx, Calc_GetAllExpressions_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -123,6 +103,15 @@ func (c *calcClient) GetArithmetic(ctx context.Context, in *GetArithmeticRequest
 	return out, nil
 }
 
+func (c *calcClient) AddSigns(ctx context.Context, in *AddSignsRequest, opts ...grpc.CallOption) (*NothingMessage, error) {
+	out := new(NothingMessage)
+	err := c.cc.Invoke(ctx, Calc_AddSigns_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CalcServer is the server API for Calc service.
 // All implementations must embed UnimplementedCalcServer
 // for forward compatibility
@@ -130,11 +119,10 @@ type CalcServer interface {
 	SaveExpression(context.Context, *SaveExpressionRequest) (*SaveExpressionResponse, error)
 	GetExpression(context.Context, *GetExpressionRequest) (*GetExpressionResponse, error)
 	UpdateExpression(context.Context, *UpdateExpressionRequest) (*NothingMessage, error)
-	DeleteExpression(context.Context, *DeleteExpressionRequest) (*NothingMessage, error)
-	GetNotDonedExpressions(context.Context, *NothingMessage) (*GetNotDonedExpressionsResponse, error)
-	GetAllExpressions(context.Context, *NothingMessage) (*GetAllExpressionsResponse, error)
+	GetAllExpressions(context.Context, *GetAllExpressionsRequest) (*GetAllExpressionsResponse, error)
 	UpdateArithmetic(context.Context, *UpdateArithmeticRequest) (*NothingMessage, error)
 	GetArithmetic(context.Context, *GetArithmeticRequest) (*GetArithmeticResponse, error)
+	AddSigns(context.Context, *AddSignsRequest) (*NothingMessage, error)
 	mustEmbedUnimplementedCalcServer()
 }
 
@@ -151,13 +139,7 @@ func (UnimplementedCalcServer) GetExpression(context.Context, *GetExpressionRequ
 func (UnimplementedCalcServer) UpdateExpression(context.Context, *UpdateExpressionRequest) (*NothingMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateExpression not implemented")
 }
-func (UnimplementedCalcServer) DeleteExpression(context.Context, *DeleteExpressionRequest) (*NothingMessage, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteExpression not implemented")
-}
-func (UnimplementedCalcServer) GetNotDonedExpressions(context.Context, *NothingMessage) (*GetNotDonedExpressionsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetNotDonedExpressions not implemented")
-}
-func (UnimplementedCalcServer) GetAllExpressions(context.Context, *NothingMessage) (*GetAllExpressionsResponse, error) {
+func (UnimplementedCalcServer) GetAllExpressions(context.Context, *GetAllExpressionsRequest) (*GetAllExpressionsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllExpressions not implemented")
 }
 func (UnimplementedCalcServer) UpdateArithmetic(context.Context, *UpdateArithmeticRequest) (*NothingMessage, error) {
@@ -165,6 +147,9 @@ func (UnimplementedCalcServer) UpdateArithmetic(context.Context, *UpdateArithmet
 }
 func (UnimplementedCalcServer) GetArithmetic(context.Context, *GetArithmeticRequest) (*GetArithmeticResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetArithmetic not implemented")
+}
+func (UnimplementedCalcServer) AddSigns(context.Context, *AddSignsRequest) (*NothingMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSigns not implemented")
 }
 func (UnimplementedCalcServer) mustEmbedUnimplementedCalcServer() {}
 
@@ -233,44 +218,8 @@ func _Calc_UpdateExpression_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Calc_DeleteExpression_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteExpressionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CalcServer).DeleteExpression(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Calc_DeleteExpression_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalcServer).DeleteExpression(ctx, req.(*DeleteExpressionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Calc_GetNotDonedExpressions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NothingMessage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CalcServer).GetNotDonedExpressions(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Calc_GetNotDonedExpressions_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalcServer).GetNotDonedExpressions(ctx, req.(*NothingMessage))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Calc_GetAllExpressions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NothingMessage)
+	in := new(GetAllExpressionsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -282,7 +231,7 @@ func _Calc_GetAllExpressions_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: Calc_GetAllExpressions_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CalcServer).GetAllExpressions(ctx, req.(*NothingMessage))
+		return srv.(CalcServer).GetAllExpressions(ctx, req.(*GetAllExpressionsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -323,6 +272,24 @@ func _Calc_GetArithmetic_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Calc_AddSigns_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSignsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CalcServer).AddSigns(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Calc_AddSigns_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CalcServer).AddSigns(ctx, req.(*AddSignsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Calc_ServiceDesc is the grpc.ServiceDesc for Calc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -343,14 +310,6 @@ var Calc_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Calc_UpdateExpression_Handler,
 		},
 		{
-			MethodName: "DeleteExpression",
-			Handler:    _Calc_DeleteExpression_Handler,
-		},
-		{
-			MethodName: "GetNotDonedExpressions",
-			Handler:    _Calc_GetNotDonedExpressions_Handler,
-		},
-		{
 			MethodName: "GetAllExpressions",
 			Handler:    _Calc_GetAllExpressions_Handler,
 		},
@@ -361,6 +320,10 @@ var Calc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetArithmetic",
 			Handler:    _Calc_GetArithmetic_Handler,
+		},
+		{
+			MethodName: "AddSigns",
+			Handler:    _Calc_AddSigns_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
